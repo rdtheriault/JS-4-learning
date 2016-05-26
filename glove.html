@@ -1,0 +1,189 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> 
+        <link href="hsd.css" rel="stylesheet" type="text/css" />
+        
+        <script>
+$(document).ready(function(){
+
+//$('#up').attr('src', 'files/up.png');
+//$('#down').attr('src', 'files/down.png');
+//$('#right').attr('src', 'files/right.png');
+//$('#left').attr('src', 'files/left.png');
+//$('#master').attr('src', 'files/up.png');
+//$('#up').attr('src', 'files/x.png');
+
+	$(document).keydown(function(e){//up
+	    if (e.keyCode == 38 ) {
+	      moveColor("red"); 
+	      }         
+	});
+	
+	$(document).keydown(function(e){//down
+	    if (e.keyCode == 40 ) {
+	      moveColor( "orange" );  
+	      }        
+	});
+
+	$(document).keydown(function(e){//right
+	    if (e.keyCode == 39 ) {
+	      moveColor( "blue" ); 
+	      }         
+	});
+
+	$(document).keydown(function(e){//left
+	    if (e.keyCode == 37 ) {
+	      moveColor("green"); 
+	      }         
+	});
+
+	$(document).keydown(function(e){//space
+	    if (e.keyCode == 32 ) {
+	      reset();
+	    }
+	});
+
+
+
+	  $("#up").click(function(){
+		moveColor("red");
+	  });
+	
+	  $("#down").click(function(){
+		moveColor("orange");
+	  });
+	  
+	  $("#right").click(function(){
+		moveColor("blue");
+	  });
+	  
+	  $("#left").click(function(){
+		moveColor("green");
+	  });
+	  
+	  $("#up1").click(function(){
+		moveColor("red");
+	  });
+	
+	  $("#down1").click(function(){
+		moveColor("orange");
+	  });
+	  
+	  $("#right1").click(function(){
+		moveColor("blue");
+	  });
+	  
+	  $("#left1").click(function(){
+		moveColor("green");
+	  });
+	  
+	  $("#master").click(function(){
+	  	  reset();
+	  });
+  
+  	$("#next").click(function(){
+		reset();
+  	});
+  
+  
+  
+  function moveColor(current){
+        var trans = translate(current);
+  	var str = '#';
+  	var str2 = '1';
+  	var trans2 = str.concat(trans);
+  	var trans3 = trans2.concat(str2);
+  	var box = $(trans2).prop('name');
+  	var box2 = $(trans3).prop('name');
+        if (box === 'active') { $(trans3).attr('src', $(trans2).attr('src'));$(trans3).attr('name', 'active');$(trans2).attr('src', 'files/white.png');$(trans2).attr('name', '');}
+        if (box2 === 'active') { $(trans2).attr('src', $(trans3).attr('src'));$(trans2).attr('name', 'active');$(trans3).attr('src', 'files/white.png');$(trans3).attr('name', '');}
+        
+  }
+  
+
+  function reset(){
+  	      $('#up1').attr('src', 'files/white.png'); $('#up1').attr('name', '');
+		$('#down1').attr('src', 'files/white.png'); $('#down1').attr('name', '');
+		$('#right1').attr('src', 'files/white.png'); $('#right1').attr('name', '');
+		$('#left1').attr('src', 'files/white.png'); $('#left1').attr('name', '');
+	      $('#up').attr('src', 'files/fIndex.png'); $('#up').attr('name', 'active');
+		$('#down').attr('src', 'files/fMiddle.png'); $('#down').attr('name', 'active');
+		$('#right').attr('src', 'files/fRing.png'); $('#right').attr('name', 'active');
+		$('#left').attr('src', 'files/fPinky.png'); $('#left').attr('name', 'active');
+  }
+  
+    function translate(current){
+      	if (current === 'red') { var up = "up"; return up;}
+      	if (current === 'orange') {var down = "down" ; return down}
+      	if (current === 'blue') {var right = "right" ; return right}
+      	if (current === 'green') {var left = "left" ; return left}
+   }
+      
+  function reset2(current){
+      	if (current !== 'RL') { $("#rl1").hide();}
+        if (current !== 'RI') { $("#ri1").hide();}
+        if (current !== 'RF') { $("#rf1").hide();}
+	if (current !== 'W') { $("#w1").hide();}
+  }
+  
+  function changeMaster(rand){
+		if (rand == 1){
+			$('#master').attr('src', 'files/red.png');
+			$('#master').attr('name', 'red');
+		}   
+		if (rand == 2){
+			$('#master').attr('src', 'files/orange.png'); 
+			$('#master').attr('name', 'orange');
+		} 
+		if (rand == 3){
+			$('#master').attr('src', 'files/blue.png'); 
+			$('#master').attr('name', 'blue');
+		} 
+		if (rand == 4){
+			$('#master').attr('src', 'files/green.png'); 
+			$('#master').attr('name', 'green');
+		}
+  }
+  
+
+
+});
+</script>
+        
+    </head>
+    <body>
+        <div class="testBlock"><img id="next" src="files/next.png">
+        </div>
+        
+      <table style="text-align:center;padding:10px">
+	<tr>
+		<td></td>
+		<td colspan="2" style="text-align:center;"><img id="master" name="red" src="files/white.png"></td>
+		<td></td>
+	</tr>
+	<tr>
+		
+		<td style="text-align:center;"><img name="" id="up1" src="files/white.png"> </td>
+		<td style="text-align:center;"><img name="" id="down1" src="files/white.png"> </td>
+		<td style="text-align:center;"><img name="" id="right1" src="files/white.png"> </td>
+		<td style="text-align:center;"><img name="" id="left1" src="files/white.png"> </td>
+	</tr>
+	<tr>
+		<td style="text-align:center;"><img name="active" id="up" src="files/fIndex.png"> </td>
+		<td style="text-align:center;"><img name="active" id="down" src="files/fMiddle.png"></td>
+		<td style="text-align:center;"><img name="active" id="right" src="files/fRing.png"></td>
+		<td style="text-align:center;"><img name="active" id="left" src="files/fPinky.png"></td>
+	<tr>
+      </table>
+    </body>
+</html>
+
+
