@@ -1,0 +1,342 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> 
+        <link href="hsd.css" rel="stylesheet" type="text/css" />
+        
+        <script>
+$(document).ready(function(){
+
+	var counter = 1;
+	var game;
+
+
+  	$("#next").click(function(){
+		start();
+  	});
+  	
+  		$(document).keydown(function(e){//space
+	    if (e.keyCode == 32 ) {
+	      start();
+	    }
+	});
+	
+	
+  	
+
+	$(document).keydown(function(e){//up
+	    if (e.keyCode == 38 ) {
+	      checkColor("red"); 
+	      }         
+	});
+	
+	$(document).keydown(function(e){//down
+	    if (e.keyCode == 40 ) {
+	      checkColor( "orange" );  
+	      }        
+	});
+
+	$(document).keydown(function(e){//right
+	    if (e.keyCode == 39 ) {
+	      checkColor( "blue" ); 
+	      }         
+	});
+
+	$(document).keydown(function(e){//left
+	    if (e.keyCode == 37 ) {
+	      checkColor("green"); 
+	      }         
+	});
+
+	  $("#up0").click(function(){
+		checkColor("red");
+	  });
+	
+	  $("#down0").click(function(){
+		checkColor("orange");
+	  });
+	  
+	  $("#right0").click(function(){
+		checkColor("blue");
+	  });
+	  
+	  $("#left0").click(function(){
+		checkColor("green");
+	  });
+  
+
+  
+  
+  
+  function start(){
+  	if ($('#next').attr('name') == 'start'){
+  		reset();		
+  		$('#next').attr('name', 'end');
+  		$('#next').attr('src', 'files/end.png');
+  		
+  		game = setInterval(function () {gameTimer()}, 800);
+  	}
+  	else if ($('#next').attr('name') == 'end'){
+  		reset();
+  		$('#next').attr('name', 'start');
+  		$('#next').attr('src', 'files/play.png');
+  		
+  		window.clearTimeout(game);
+  	}
+  }
+  
+  function gameTimer(){
+  	moveDown();
+  	
+  
+  }
+  
+  function checkColor(current){
+        var trans = translate(current);
+  	var str = '#';
+  	var str2 = '0';
+  	var trans2 = str.concat(trans);
+  	var transend = trans2.concat(str2);
+  	var box = $(transend).prop('name');
+  	//var box2 = $(trans3).prop('name');
+        if (box === 'active') { score(transend);}
+        if (box !== 'active') { miss(transend);}
+  }
+  
+  function score(cls){
+	$(cls).attr('src', "files/star.png");
+  }
+  
+  function miss(cls){
+	$(cls).attr('src', "files/x.png");
+  }
+  
+  function moveDown(){
+	var rand = Math.floor((Math.random() * 4) + 1);    
+ 	changeMaster(rand);
+        checkMaster();
+  	var percent = ["f","95","75","65","50","35","25","20"];
+	var clss = ["up","down","right","left"];
+	for (i = 0; i < 4; i++){
+		  	var cls = '#';
+		  	var clr = retranslate(clss[i]);
+		  	for (x = 1; x < 8; x++){
+	  			var cls2 = x;//start at TD 1
+		  		var cls3 = cls.concat(clss[i]);
+		  		var cls4 = cls3.concat(cls2);//TD to be moved from
+		  				  		
+		  		var mcls2 = x-1;
+		  		var mcls4 = cls3.concat(mcls2);//TD to be moved to
+		  		
+		  		var fil = 'files/colors/';//used for both
+		  		var filend = ".png";
+		  		
+		  		/////note this is backwards from how I did class mfil is moved from where mcls is moved to/////
+		  		var filclr = fil.concat(clr);
+		  		var filbeg = filclr.concat(percent[x-1]);
+		  		var filled = filbeg.concat(filend);//url to color with size for move
+		  		
+		  		var mfilclr = fil.concat('white');
+		  		var mfilbeg = mfilclr.concat(percent[x]);
+		  		var mfilled = mfilbeg.concat(filend);//url back to white for old one
+		  	
+		  		var box = $(cls4).attr('name');
+			  	if (box === 'active') {
+			  	
+			  		$(cls4).attr('src', mfilled);
+			  		$(cls4).attr('name', '');
+			  		$(mcls4).attr('src', filled);
+			  		$(mcls4).attr('name', 'active');
+			  	}
+			  }
+	}
+        
+        
+        
+   }     
+  
+
+  function reset(){
+	var percent = ["95","75","65","50","35","25","20"];
+	var clss = ["up","down","right","left"];
+	for (i = 0; i < 4; i++){
+		  	var cls = '#';
+		  	for (x = 0; x < 7; x++){
+		  		var cls2 = x+1;
+		  		var trans2 = cls.concat(clss[i]);
+		  		var trans3 = trans2.concat(cls2);
+		  		
+		  		var fil = 'files/colors/white';
+		  		var fil2 = ".png";
+		  		var trans4 = fil.concat(percent[x]);
+		  		var trans5 = trans4.concat(fil2);
+		  		$(trans3).attr('src', trans5); $(trans3).attr('name', '');
+		  	}
+	}
+	
+      $('#up0').attr('src', 'files/colors/redf.png'); $('#up0').attr('name', '');
+	$('#down0').attr('src', 'files/colors/orangef.png'); $('#down0').attr('name', '');
+	$('#right0').attr('src', 'files/colors/bluef.png'); $('#right0').attr('name', '');
+	$('#left0').attr('src', 'files/colors/greenf.png'); $('#left0').attr('name', '');
+  }
+  
+    function translate(current){
+      	if (current === 'red') { var up = "up"; return up;}
+      	if (current === 'orange') {var down = "down" ; return down}
+      	if (current === 'blue') {var right = "right" ; return right}
+      	if (current === 'green') {var left = "left" ; return left}
+   }
+   
+    function retranslate(current){
+      	if (current === 'up') { var red = "red"; return red;}
+      	if (current === 'down') {var orange = "orange" ; return orange}
+      	if (current === 'right') {var blue = "blue" ; return blue}
+      	if (current === 'left') {var green = "green" ; return green}
+   }
+      
+  function flow(current){
+      	if (current === 'red') { $('#up7').attr('src', 'files/colors/red20.png') ; $('#up7').attr('name', 'active') ; }
+        if (current === 'orange') { $('#down7').attr('src', 'files/colors/orange20.png') ; $('#down7').attr('name', 'active') ; }
+        if (current === 'blue') { $('#right7').attr('src', 'files/colors/blue20.png') ; $('#right7').attr('name', 'active') ; }
+	if (current === 'green') { $('#left7').attr('src', 'files/colors/green20.png') ; $('#left7').attr('name', 'active') ; }
+  }
+  
+  function changeMaster(rand){
+		if (rand == 1){
+			$('#master').attr('src', 'files/colors/red35.png');
+			$('#master').attr('name', 'red');
+		}   
+		if (rand == 2){
+			$('#master').attr('src', 'files/colors/orange35.png'); 
+			$('#master').attr('name', 'orange');
+		} 
+		if (rand == 3){
+			$('#master').attr('src', 'files/colors/blue35.png'); 
+			$('#master').attr('name', 'blue');
+		} 
+		if (rand == 4){
+			$('#master').attr('src', 'files/colors/green35.png'); 
+			$('#master').attr('name', 'green');
+		}
+  }
+  
+  function checkMaster(){
+  	if ($('#master').attr('name') !== ""){
+  		var clr = $('#master').attr('name');  		
+  		flow(clr);
+  	}
+  	
+  }
+
+});
+</script>
+        
+    </head>
+    <body>
+        <div class="testBlock"><img name="start" id="next" src="files/play.png">
+        </div>
+      <table style="text-align:center;padding:10px">
+	<tr>
+		<td></td>
+		<td colspan="14" style="text-align:center;"><img id="master" name="red" src="files/colors/red35.png"></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td>  </td>
+		<td> <img name="" id="up7" src="files/colors/red20.png"> </td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td> <img name="" id="down7" src="files/colors/orange20.png"> </td>
+		<td> <img name="" id="right7" src="files/colors/blue20.png"> </td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td> <img name="" id="left7" src="files/colors/green20.png"> </td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td>  </td>
+		<td> <img name="" id="up6" src="files/colors/red25.png"> </td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td> <img name="" id="down6" src="files/colors/orange25.png"> </td>
+		<td> <img name="" id="right6" src="files/colors/blue25.png"> </td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td> <img name="" id="left6" src="files/colors/green25.png"> </td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td colspan="2"></td>
+		<td colspan="2"> <img name="" id="up5" src="files/colors/red35.png"> </td>
+		<td colspan="2"></td>
+		<td colspan="2"> <img name="" id="down5" src="files/colors/orange35.png"> </td>
+		<td colspan="2"> <img name="" id="right5" src="files/colors/blue35.png"> </td>
+		<td colspan="2"></td>
+		<td colspan="2"> <img name="" id="left5" src="files/colors/green35.png"> </td>
+		<td colspan="2"></td>
+	</tr>
+	<tr>
+		<td colspan="2"></td>
+		<td colspan="2"> <img name="" id="up4" src="files/colors/red50.png"> </td>
+		<td colspan="2"></td>
+		<td colspan="2"> <img name="" id="down4" src="files/colors/orange50.png"> </td>
+		<td colspan="2"> <img name="" id="right4" src="files/colors/blue50.png"> </td>
+		<td colspan="2"></td>
+		<td colspan="2"><img name="" id="left4" src="files/colors/green50.png"> </td>
+		<td colspan="2"></td>
+	</tr>	
+	<tr>
+		<td colspan="1"></td>
+		<td colspan="3"> <img name="" id="up3" src="files/colors/red65.png"> </td>
+		<td colspan="1"></td>
+		<td colspan="3"> <img name="" id="down3" src="files/colors/orange65.png"> </td>
+		<td colspan="3"> <img name="" id="right3" src="files/colors/blue65.png"> </td>
+		<td colspan="1"></td>
+		<td colspan="3"> <img name="" id="left3" src="files/colors/green65.png"> </td>
+		<td colspan="1"></td>
+	</tr>	
+	<tr>
+		<td colspan="1"></td>
+		<td colspan="3"> <img name="" id="up2" src="files/colors/red75.png"> </td>
+		<td colspan="1"></td>
+		<td colspan="3"> <img name="" id="down2" src="files/colors/orange75.png"> </td>
+		<td colspan="3"> <img name="" id="right2" src="files/colors/blue75.png"> </td>
+		<td colspan="1"></td>
+		<td colspan="3"> <img name="" id="left2" src="files/colors/green75.png"> </td>
+		<td colspan="1"></td>
+	</tr>	
+	<tr>
+		
+		<td colspan="4" style="text-align:right;"> <img name="" id="up1" src="files/colors/red95.png"> </td>
+		<td colspan="4" style="text-align:center;"> <img name="" id="down1" src="files/colors/orange95.png"> </td>
+		<td colspan="4" style="text-align:center;"> <img name="" id="right1" src="files/colors/blue95.png"> </td>
+		<td colspan="4" style="text-align:left;"> <img name="" id="left1" src="files/colors/green95.png"> </td>
+	</tr>
+	<tr>
+		<td colspan="4" style="text-align:center;"><img name="" id="up0" src="files/colors/redf.png"> </td>
+		<td colspan="4" style="text-align:center;"><img name="" id="down0" src="files/colors/orangef.png"></td>
+		<td colspan="4" style="text-align:center;"><img name="" id="right0" src="files/colors/bluef.png"></td>
+		<td colspan="4" style="text-align:center;"><img name="" id="left0" src="files/colors/greenf.png"></td>
+	<tr>
+      </table>
+    </body>
+</html>
