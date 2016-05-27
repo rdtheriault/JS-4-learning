@@ -2,5 +2,5 @@
 
 ##You should be able to get the files (pic and sound) using linux
 ```
-sudo wget -r http://sagefirellc.com/hsd/makey/files
+sudo wget -r --no-parent http://sagefirellc.com/hsd/makey/files
 ```
